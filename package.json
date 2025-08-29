@@ -1,0 +1,38 @@
+{
+  "name": "user-management",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@atlaskit/button": "^23.4.3",
+    "@atlaskit/css-reset": "^7.3.5",
+    "@atlaskit/dynamic-table": "^18.2.10",
+    "@atlaskit/heading": "^5.2.4",
+    "@atlaskit/modal-dialog": "^14.3.5",
+    "@atlaskit/select": "^21.2.6",
+    "@atlaskit/textfield": "^8.0.10",
+    "axios": "^1.11.0",
+    "bootstrap": "^5.3.8",
+    "react": "^18.3.1",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.8.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "vite": "^7.1.2"
+  }
+}
