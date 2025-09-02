@@ -7,8 +7,11 @@ import EmployeeDetailsModal from "./Components/EmployeeDetailsModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ShortlistedUsers from "./Components/ShortlistedUsers";
 import Button from "@atlaskit/button/new";
+import { useNavigate } from "react-router-dom";
+import { encryptData, decryptData } from "./Components/cryptoUtils";
 
 function App() {
+  const navigate = useNavigate(); 
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [filters, setFilters] = useState({
@@ -24,9 +27,26 @@ function App() {
   });
 
   // modal + shortlist states
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [shortlisted, setShortlisted] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);  
   const [showModal, setShowModal] = useState(false);
+  const [shortlisted, setShortlisted] = useState([]);
+
+  // Load from storage (decrypt)
+  useEffect(() => {
+    const stored = localStorage.getItem("shortlistedUsers");
+    if (stored) {
+      setShortlisted(decryptData(stored));
+    }
+  }, []);
+
+  // Save to storage (encrypt)
+  useEffect(() => {
+    if (shortlisted.length > 0) {
+      localStorage.setItem("shortlistedUsers", encryptData(shortlisted));
+    } else {
+      localStorage.removeItem("shortlistedUsers");
+    }
+  }, [shortlisted]);
 
   const baseUrl = "https://dummyjson.com";
 
@@ -104,40 +124,39 @@ function App() {
     });
   };
 
+const handleViewShortlist = () => {
+    if (shortlisted.length === 0) {
+      alert("No shortlisted users!");
+    } else {
+      navigate("/shortlisted", { state: { shortlisted } });
+    }
+  };
 
   return (
     <>
-    <div style={{padding:"15px"}}>
-    <div>
-      <h1><center>User Management App</center></h1>
-    <div>
-      <Button variant="secondary" onClick={() => setShowModal(true)}>
-        View Shortlisted Users
-      </Button>
-      <ShortlistedUsers
-        show={showModal}
-        handleClose={() => setShowModal(false)}
-        shortlisted={shortlisted}
-        onRemove={(id) =>
-          setShortlisted((prev) => prev.filter((u) => u.id !== id))
-        }
-      />
-    </div>
-      <div style={{marginTop:"10px",marginBottom:"10px"}}>
-      <Search onSearch={handleSearch} onClear={handleClearSearch} />
-      <Filter options={options} setFilters={setFilters} />
+      <div style={{ padding: "15px" }}>
+        <h1><center>User Management App</center></h1>
+
+      <div>
+        <Button variant="secondary" onClick={handleViewShortlist}>
+          View Shortlisted Users ({shortlisted.length})
+        </Button>
       </div>
-      <Table users={filteredUsers} handleDetails={handleDetails} />
+
+        <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+          <Search onSearch={handleSearch} onClear={handleClearSearch} />
+          <Filter options={options} setFilters={setFilters} />
+        </div>
+
+        <Table users={filteredUsers} handleDetails={handleDetails} />
+
+        <EmployeeDetailsModal
+          show={!!selectedUser}
+          user={selectedUser}
+          onHide={() => setSelectedUser(null)}
+          onShortlist={handleShortlist}
+        />
       </div>
-    <div>
-    <EmployeeDetailsModal
-      show={!!selectedUser}
-      user={selectedUser}
-      onHide={() => setSelectedUser(null)}
-      onShortlist={handleShortlist}
-    />
-    </div>
-    </div>
     </>
   );
 }
