@@ -28,7 +28,7 @@ function App() {
 
   // modal + shortlist states
   const [selectedUser, setSelectedUser] = useState(null);  
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [shortlisted, setShortlisted] = useState([]);
 
   // Load from storage (decrypt)

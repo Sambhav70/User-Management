@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Button, Row, Col, Image } from "react-bootstrap";
+
 export default function EmployeeDetailsModal({ show, onHide, user, onShortlist }) {
   if (!user) return null;
 
@@ -45,7 +46,7 @@ export default function EmployeeDetailsModal({ show, onHide, user, onShortlist }
         variant="primary" 
         onClick={() => {
             onShortlist(user);
-            onHide();  // ✅ closes modal
+            onHide();
         }}
         >
         Shortlist
